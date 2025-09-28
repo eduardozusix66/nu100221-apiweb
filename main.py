@@ -16,12 +16,14 @@ class Estudiante(Base):
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String(100), nullable=False, index=True)
     edad = Column(Integer, nullable=False)
+     foto_url = Column(String(255), nullable=True)  # <--- Nuevo campo
 
 Base.metadata.create_all(bind=engine)
 
 class EstudianteSchema(BaseModel):
     nombre: str
     edad: int
+    foto_url: str | None = None  # <--- Nuevo campo opcional
 
 app = FastAPI()
 
@@ -38,7 +40,7 @@ app.add_middleware(
 def insertar_estudiante(estudiante: EstudianteSchema):
     db = SessionLocal()
     try:
-        nuevo = Estudiante(nombre=estudiante.nombre, edad=estudiante.edad)
+        nuevo = Estudiante(nombre=estudiante.nombre, edad=estudiante.edad , foto_url=estudiante.foto_url)
         db.add(nuevo)
         db.commit()
         db.refresh(nuevo)
@@ -66,10 +68,11 @@ def actualizar_estudiante(
             raise HTTPException(status_code=404, detail="Estudiante no encontrado")
         est.nombre = estudiante.nombre
         est.edad = estudiante.edad
+         est.foto_url = estudiante.foto_url
         db.commit()
         db.refresh(est)
         return {"mensaje": "Estudiante actualizado",
-                "data": {"id": est.id, "nombre": est.nombre, "edad": est.edad}}
+                "data": {"id": est.id, "nombre": est.nombre, "edad": est.edad, "foto_url": est.foto_url}}
     finally:
         db.close()
 
@@ -85,3 +88,4 @@ def eliminar_estudiante(id: int):
         return {"mensaje": "Estudiante eliminado"}
     finally:
         db.close()
+
