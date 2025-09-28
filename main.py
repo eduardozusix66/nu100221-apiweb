@@ -16,7 +16,7 @@ class Estudiante(Base):
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String(100), nullable=False, index=True)
     edad = Column(Integer, nullable=False)
-     foto_url = Column(String(255), nullable=True)  # <--- Nuevo campo
+    foto_url = Column(String(255), nullable=True)  # <--- Nuevo campo
 
 Base.metadata.create_all(bind=engine)
 
@@ -68,7 +68,7 @@ def actualizar_estudiante(
             raise HTTPException(status_code=404, detail="Estudiante no encontrado")
         est.nombre = estudiante.nombre
         est.edad = estudiante.edad
-         est.foto_url = estudiante.foto_url
+        est.foto_url = estudiante.foto_url
         db.commit()
         db.refresh(est)
         return {"mensaje": "Estudiante actualizado",
@@ -88,4 +88,5 @@ def eliminar_estudiante(id: int):
         return {"mensaje": "Estudiante eliminado"}
     finally:
         db.close()
+
 
