@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # Ajusta tu cadena de conexión (sin tildes/ñ) o usa URL encoding
-DATABASE_URL = "postgresql://postgres:uPxBHn]Ag9H~N4'K@20.84.99.214:443/postgres"
+DATABASE_URL = "postgresql://postgres:uPxBHn]Ag9H~N4'K@20.84.99.214:443/nu100221"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
@@ -88,5 +88,6 @@ def eliminar_estudiante(id: int):
         return {"mensaje": "Estudiante eliminado"}
     finally:
         db.close()
+
 
 
